@@ -5,7 +5,6 @@ window.initGame = (React, assetsUrl) => {
     const [cards, setCards] = useState([]);
     const [flippedCards, setFlippedCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
-    const [score, setScore] = useState(0);
     const [gameOver, setGameOver] = useState(false);
     const [moves, setMoves] = useState(0);
 
@@ -66,7 +65,6 @@ window.initGame = (React, assetsUrl) => {
       'div',
       { className: 'memory-match' },
       React.createElement('h1', null, 'Memory Match'),
-      React.createElement('p', null, `Score: ${score}`),
       React.createElement('p', null, `Moves: ${moves}`),
       gameOver && (
         React.createElement(
