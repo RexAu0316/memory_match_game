@@ -57,7 +57,7 @@ window.initGame = (React, assetsUrl) => {
           newIsFlipped[openCards[1]] = false;
           setIsFlipped(newIsFlipped);
           setOpenCards([]);
-        }, 1000);
+        }, 1500); // Increase the delay to 1.5 seconds
       }
     };
 
