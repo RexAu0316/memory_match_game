@@ -71,25 +71,12 @@ window.initGame = (React, assetsUrl) => {
       setMoves(0);
     };
 
-    return React.createElement(
+     return React.createElement(
       'div',
       { className: 'memory-match' },
       React.createElement('h1', null, 'Memory Match'),
       React.createElement('p', null, `Time: ${timer} seconds`),
       React.createElement('p', null, `Moves: ${moves}`),
-      gameOver && (
-        React.createElement(
-          'div',
-          null,
-          React.createElement('h2', null, 'Game Over'),
-          React.createElement('p', null, `You completed the game in ${timer} seconds and ${moves} moves!`),
-          React.createElement(
-            'button',
-            { onClick: handleRestart },
-            'Restart'
-          )
-        )
-      ),
       React.createElement(
         'div',
         { className: 'card-grid' },
@@ -109,6 +96,19 @@ window.initGame = (React, assetsUrl) => {
                 style: { backgroundImage: `url(${assetsUrl}/${card.image})` }
               }
             )
+          )
+        )
+      ),
+      gameOver && (
+        React.createElement(
+          'div',
+          { className: 'game-over' },
+          React.createElement('h2', null, 'Game Over'),
+          React.createElement('p', null, `You completed the game in ${timer} seconds and ${moves} moves!`),
+          React.createElement(
+            'button',
+            { onClick: handleRestart },
+            'Restart'
           )
         )
       )
