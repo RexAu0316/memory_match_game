@@ -51,12 +51,12 @@
 .game-over-container {
   margin-top: 20px;
   text-align: center;
-  background-color: #f0f0f0;
 }
 
 .game-over {
   background-color: #fff;
   padding: 20px;
   border-radius: 4px;
+  background-color: #f0f0f0;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
