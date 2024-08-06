@@ -19,17 +19,18 @@ window.initGame = (React, assetsUrl) => {
         'Yoshi.png', 'Yoshi.png',
         'Luigi.png', 'Luigi.png',
       ];
-    
+
       // Shuffle the cards
-      const shuffledCards = cardImages.sort(() => Math.random() - 0.5).map((image, index) => ({
+      const shuffledCards = cardImages.map((image, index) => ({
         image: `${assetsUrl}/${image}`,
         id: index,
         isFlipped: false,
       }));
-    
+
       setCards(shuffledCards);
       setIsFlipped(shuffledCards.map(() => false)); // Initialize all cards as not flipped
     }, []);
+
     const handleCardClick = (card) => {
       // If the game hasn't started yet, start the game
       if (!gameStarted) {
@@ -91,7 +92,8 @@ window.initGame = (React, assetsUrl) => {
                   className: `card ${isFlipped[card.id] || matchedCards.includes(card.id) ? 'open' : ''}`,
                   onClick: () => handleCardClick(card)
                 },
-                React.createElement('img', { src: isFlipped[card.id] || matchedCards.includes(card.id) ? card.image : backImage, alt: `Card ${index}` })
+                React.createElement('div', { className: 'front' }, 'Card'),
+                React.createElement('div', { className: 'back' }, React.createElement('img', { src: card.image, alt: `Card ${index}` }))
               )
             )
           )
