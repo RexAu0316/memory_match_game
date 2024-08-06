@@ -7,7 +7,7 @@ window.initGame = (React, assetsUrl) => {
     const [matchedCards, setMatchedCards] = useState([]);
 
     useEffect(() => {
-      const cardImages = ['mario.png', 'Toad.png', 'Luigi.png', 'Yoshi.png'];
+      const cardImages = ['image1.png', 'image2.png', 'image3.png', 'image4.png', 'image5.png', 'image6.png'];
       const shuffledCards = [...cardImages, ...cardImages]
         .sort(() => Math.random() - 0.5)
         .map(image => ({ image, flipped: false }));
@@ -53,7 +53,11 @@ window.initGame = (React, assetsUrl) => {
             {
               key: index,
               className: `card ${card.flipped || matchedCards.includes(index) ? 'flipped' : ''}`,
-              style: { backgroundImage: `url(${assetsUrl}/${card.image})` },
+              style: {
+                backgroundImage: card.flipped || matchedCards.includes(index)
+                  ? `url(${assetsUrl}/${card.image})`
+                  : 'url(/path/to/your/face-down-card-image.png)'
+              },
               onClick: () => handleCardClick(index)
             }
           )
