@@ -20,7 +20,7 @@ window.initGame = (React, assetsUrl) => {
       return () => clearInterval(interval);
     }, [gameOver]);
 
-    // Shuffle the cards only once when the component is first rendered
+    // Shuffle the cards on initial render and when the Restart button is clicked
     useEffect(() => {
       const cardImages = ['mario.png', 'Luigi.png', 'Yoshi.png', 'Toad.png'];
       const shuffledCards = [...cardImages, ...cardImages]
@@ -61,6 +61,13 @@ window.initGame = (React, assetsUrl) => {
     );
 
     const handleRestart = () => {
+      // Shuffle the cards
+      const cardImages = ['mario.png', 'Luigi.png', 'Yoshi.png', 'Toad.png'];
+      const shuffledCards = [...cardImages, ...cardImages]
+        .sort(() => Math.random() - 0.5)
+        .map(image => ({ image, flipped: false }));
+
+      setCards(shuffledCards);
       setFlippedCards([]);
       setMatchedCards([]);
       setTimer(0);
@@ -116,7 +123,7 @@ window.initGame = (React, assetsUrl) => {
     );
   };
 
-    return () => React.createElement(MemoryMatch, { assetsUrl: assetsUrl });
+  return () => React.createElement(MemoryMatch, { assetsUrl: assetsUrl });
 };
 
 console.log('Memory Match game script loaded');
