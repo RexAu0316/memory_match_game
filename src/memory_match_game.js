@@ -19,17 +19,18 @@ window.initGame = (React, assetsUrl) => {
         'Yoshi.png', 'Yoshi.png',
         'Luigi.png', 'Luigi.png',
       ];
-
+    
       // Shuffle the cards
       const shuffledCards = cardImages.sort(() => Math.random() - 0.5).map((image, index) => ({
         image: `${assetsUrl}/${image}`,
         id: index,
         isFlipped: false,
       }));
-
+    
       setCards(shuffledCards);
+      setIsFlipped(shuffledCards.map(() => false)); // Initialize all cards as not flipped
     }, []);
-
+    
     const handleCardClick = (card) => {
       // If the game hasn't started yet, start the game
       if (!gameStarted) {
