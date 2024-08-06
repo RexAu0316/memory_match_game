@@ -6,6 +6,8 @@ window.initGame = (React, assetsUrl) => {
     const [flippedCards, setFlippedCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
     const [score, setScore] = useState(0);
+    const [gameOver, setGameOver] = useState(false);
+    const [moves, setMoves] = useState(0);
 
     useEffect(() => {
       const cardImages = ['mario.png', 'Luigi.png', 'Yoshi.png', 'Toad.png'];
@@ -18,16 +20,21 @@ window.initGame = (React, assetsUrl) => {
 
     const handleCardClick = useCallback(
       (index) => {
-        if (flippedCards.length < 2 && !matchedCards.includes(index)) {
+        if (!gameOver && flippedCards.length < 2 && !matchedCards.includes(index)) {
           const updatedCards = [...cards];
           updatedCards[index].flipped = true;
           setCards(updatedCards);
           setFlippedCards([...flippedCards, index]);
+          setMoves(moves + 1); // Increment the move count
 
           if (flippedCards.length === 1 && cards[flippedCards[0]].image === cards[index].image) {
             setMatchedCards([...matchedCards, flippedCards[0], index]);
             setFlippedCards([]);
             setScore(score + 1); // Increment the score
+
+            if (matchedCards.length === cards.length - 2) {
+              setGameOver(true); // Game over when all cards are matched
+            }
           } else if (flippedCards.length === 1) {
             setTimeout(() => {
               const resetCards = [...cards];
@@ -39,14 +46,42 @@ window.initGame = (React, assetsUrl) => {
           }
         }
       },
-      [cards, flippedCards, matchedCards, score]
+      [cards, flippedCards, matchedCards, score, moves, gameOver]
     );
+
+    const handleRestart = () => {
+      setCards(
+        cards.map(card => ({
+          image: card.image,
+          flipped: false,
+        }))
+      );
+      setFlippedCards([]);
+      setMatchedCards([]);
+      setScore(0);
+      setGameOver(false);
+      setMoves(0);
+    };
 
     return React.createElement(
       'div',
       { className: 'memory-match' },
       React.createElement('h1', null, 'Memory Match'),
-      React.createElement('p', null, `Score: ${score}`), // Display the current score
+      React.createElement('p', null, `Score: ${score}`),
+      React.createElement('p', null, `Moves: ${moves}`),
+      gameOver && (
+        React.createElement(
+          'div',
+          null,
+          React.createElement('h2', null, 'Game Over'),
+          React.createElement('p', null, `You completed the game in ${moves} moves!`),
+          React.createElement(
+            'button',
+            { onClick: handleRestart },
+            'Restart'
+          )
+        )
+      ),
       React.createElement(
         'div',
         { className: 'card-grid' },
