@@ -1,22 +1,19 @@
 #game-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 20px;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  grid-gap: 10px;
+  perspective: 1000px;
 }
 
 .card {
+  position: relative;
   width: 100px;
   height: 100px;
-  position: relative;
   transform-style: preserve-3d;
   transition: transform 0.5s;
-  cursor: pointer;
 }
 
-.card.open {
+.card.flipped {
   transform: rotateY(180deg);
 }
 
@@ -29,6 +26,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 40px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -41,6 +39,7 @@
 
 .card .back {
   background-color: #4CAF50;
+  color: #fff;
   transform: rotateY(180deg);
 }
 
