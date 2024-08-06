@@ -6,7 +6,7 @@ window.initGame = (React, assetsUrl) => {
     const [cards, setCards] = useState([]);
     const [openCards, setOpenCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
-    const [isFlipped, setIsFlipped] = useState([]);
+    const [isFlipped, setIsFlipped] = useState(cards.map(() => false)); // Initialize isFlipped with the correct length
     const [backImage, setBackImage] = useState(`${assetsUrl}/back.png`);
     const [gameStarted, setGameStarted] = useState(false);
     const [gameFinished, setGameFinished] = useState(false);
@@ -89,7 +89,7 @@ window.initGame = (React, assetsUrl) => {
                 'div',
                 {
                   key: index,
-                  className: `card ${isFlipped[card.id] || matchedCards.includes(card.id) ? 'open' : ''}`,
+                  className: `card ${isFlipped[index] || matchedCards.includes(card.id) ? 'open' : ''}`,
                   onClick: () => handleCardClick(card)
                 },
                 React.createElement('div', { className: 'front' }, 'Card'),
