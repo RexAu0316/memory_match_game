@@ -34,11 +34,12 @@ window.initGame = (React, assetsUrl) => {
           updatedCards[index].flipped = true;
           setCards(updatedCards);
           setFlippedCards([...flippedCards, index]);
-          setMoves(moves + 1); // Increment the move count
+         
 
           if (flippedCards.length === 1 && cards[flippedCards[0]].image === cards[index].image) {
             setMatchedCards([...matchedCards, flippedCards[0], index]);
             setFlippedCards([]);
+            setMoves(moves + 1); // Increment the move count
 
             if (matchedCards.length === cards.length - 2) {
               setGameOver(true); // Game over when all cards are matched
