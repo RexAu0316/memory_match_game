@@ -1,48 +1,68 @@
 window.initGame = (React, assetsUrl) => {
-  const { useState, useEffect } = React;
+  const { useState, useEffect, useCallback } = React;
 
-  const WhackAMole = ({ assetsUrl }) => {
-    const [score, setScore] = useState(0);
-    const [activeMole, setActiveMole] = useState(null);
+  const MemoryMatch = ({ assetsUrl }) => {
+    const [cards, setCards] = useState([]);
+    const [flippedCards, setFlippedCards] = useState([]);
+    const [matchedCards, setMatchedCards] = useState([]);
 
     useEffect(() => {
-      const interval = setInterval(() => {
-        setActiveMole(Math.floor(Math.random() * 9));
-      }, 1000);
-      return () => clearInterval(interval);
+      const cardImages = ['mario.png', 'Toad.png', 'Luigi.png', 'Yoshi.png'];
+      const shuffledCards = [...cardImages, ...cardImages]
+        .sort(() => Math.random() - 0.5)
+        .map(image => ({ image, flipped: false }));
+
+      setCards(shuffledCards);
     }, []);
 
-    const whackMole = (index) => {
-      if (index === activeMole) {
-        setScore(score + 1);
-        setActiveMole(null);
-      }
-    };
+    const handleCardClick = useCallback(
+      (index) => {
+        if (flippedCards.length < 2 && !matchedCards.includes(index)) {
+          const updatedCards = [...cards];
+          updatedCards[index].flipped = true;
+          setCards(updatedCards);
+          setFlippedCards([...flippedCards, index]);
+
+          if (flippedCards.length === 1 && cards[flippedCards[0]].image === cards[index].image) {
+            setMatchedCards([...matchedCards, flippedCards[0], index]);
+            setFlippedCards([]);
+          } else if (flippedCards.length === 1) {
+            setTimeout(() => {
+              const resetCards = [...cards];
+              resetCards[flippedCards[0]].flipped = false;
+              resetCards[index].flipped = false;
+              setCards(resetCards);
+              setFlippedCards([]);
+            }, 1000);
+          }
+        }
+      },
+      [cards, flippedCards, matchedCards]
+    );
 
     return React.createElement(
       'div',
-      { className: "whack-a-mole" },
-      React.createElement('h2', null, "Whack-a-Mole"),
-      React.createElement('p', null, `Score: ${score}`),
+      { className: 'memory-match' },
+      React.createElement('h1', null, 'Memory Match'),
       React.createElement(
         'div',
-        { className: "game-board" },
-        Array(9).fill().map((_, index) =>
+        { className: 'card-grid' },
+        cards.map((card, index) =>
           React.createElement(
             'div',
             {
               key: index,
-              className: `mole ${index === activeMole ? 'active' : ''}`,
-              onClick: () => whackMole(index)
-            },
-            index === activeMole && React.createElement('img', { src: `${assetsUrl}/mole.png`, alt: "Mole" })
+              className: `card ${card.flipped || matchedCards.includes(index) ? 'flipped' : ''}`,
+              style: { backgroundImage: `url(${assetsUrl}/${card.image})` },
+              onClick: () => handleCardClick(index)
+            }
           )
         )
       )
     );
   };
 
-  return () => React.createElement(WhackAMole, { assetsUrl: assetsUrl });
+  return () => React.createElement(MemoryMatch, { assetsUrl: assetsUrl });
 };
 
-console.log('Whack-a-Mole game script loaded');
+console.log('Memory Match game script loaded');
