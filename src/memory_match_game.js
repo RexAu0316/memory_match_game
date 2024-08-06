@@ -7,6 +7,7 @@ window.initGame = (React, assetsUrl) => {
     const [openCards, setOpenCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
     const [isFlipped, setIsFlipped] = useState([]);
+    const [backImage, setBackImage] = useState(`${assetsUrl}/back.png`);
 
     useEffect(() => {
       // Initialize the game cards
@@ -73,10 +74,10 @@ window.initGame = (React, assetsUrl) => {
             'div',
             {
               key: index,
-              className: `card ${isFlipped[card.id] ? 'open' : ''}`,
+              className: `card ${isFlipped[card.id] || matchedCards.includes(card.id) ? 'open' : ''}`,
               onClick: () => handleCardClick(card)
             },
-            React.createElement('img', { src: isFlipped[card.id] ? card.image : `${assetsUrl}/back.png`, alt: `Card ${index}` })
+            React.createElement('img', { src: isFlipped[card.id] || matchedCards.includes(card.id) ? card.image : backImage, alt: `Card ${index}` })
           )
         )
       )
