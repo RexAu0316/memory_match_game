@@ -3,6 +3,8 @@
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
   perspective: 1000px;
+  justify-content: center;
+  margin: 20px auto;
 }
 
 .card {
@@ -11,6 +13,7 @@
   height: 100px;
   transform-style: preserve-3d;
   transition: transform 0.5s;
+  padding: 10px;
 }
 
 .card.flipped {
@@ -26,9 +29,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 40px;
+  font-size: 32px;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
 }
 
 .card .front {
@@ -44,6 +48,6 @@
 }
 
 .card .back img {
-  width: 80px;
-  height: 80px;
+  max-width: 80%;
+  max-height: 80%;
 }
