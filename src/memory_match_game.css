@@ -41,7 +41,7 @@
 .card .back {
   background-size: cover;
   transform: rotateY(180deg);
-  background-color: #e0e0e0; /* Light gray back */
+  background-color: white; 
 }
 
 .card.flipped {
