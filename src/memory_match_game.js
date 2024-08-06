@@ -8,6 +8,8 @@ window.initGame = (React, assetsUrl) => {
     const [matchedCards, setMatchedCards] = useState([]);
     const [isFlipped, setIsFlipped] = useState([]);
     const [backImage, setBackImage] = useState(`${assetsUrl}/back.png`);
+    const [gameStarted, setGameStarted] = useState(false);
+    const [gameFinished, setGameFinished] = useState(false);
 
     useEffect(() => {
       // Initialize the game cards
@@ -29,6 +31,11 @@ window.initGame = (React, assetsUrl) => {
     }, []);
 
     const handleCardClick = (card) => {
+      // If the game hasn't started yet, start the game
+      if (!gameStarted) {
+        setGameStarted(true);
+      }
+
       // If the card is already matched, do nothing
       if (matchedCards.includes(card.id)) return;
 
@@ -49,6 +56,11 @@ window.initGame = (React, assetsUrl) => {
       if (openCards.length === 1 && openCards[0] === card.id) {
         setMatchedCards([...matchedCards, card.id, openCards[0]]);
         setScore(score + 1);
+
+        // Check if the game is finished
+        if (matchedCards.length === cards.length) {
+          setGameFinished(true);
+        }
       } else if (openCards.length === 2 && openCards[0] !== openCards[1]) {
         // Flip the cards back over after a short delay
         setTimeout(() => {
@@ -66,21 +78,23 @@ window.initGame = (React, assetsUrl) => {
       { className: "memory-match" },
       React.createElement('h2', null, "Memory Match"),
       React.createElement('p', null, `Score: ${score}`),
-      React.createElement(
-        'div',
-        { className: "game-board" },
-        cards.map((card, index) =>
-          React.createElement(
+      gameFinished
+        ? React.createElement('p', null, "Congratulations! You've finished the game.")
+        : React.createElement(
             'div',
-            {
-              key: index,
-              className: `card ${isFlipped[card.id] || matchedCards.includes(card.id) ? 'open' : ''}`,
-              onClick: () => handleCardClick(card)
-            },
-            React.createElement('img', { src: isFlipped[card.id] || matchedCards.includes(card.id) ? card.image : backImage, alt: `Card ${index}` })
+            { className: "game-board" },
+            cards.map((card, index) =>
+              React.createElement(
+                'div',
+                {
+                  key: index,
+                  className: `card ${isFlipped[card.id] || matchedCards.includes(card.id) ? 'open' : ''}`,
+                  onClick: () => handleCardClick(card)
+                },
+                React.createElement('img', { src: isFlipped[card.id] || matchedCards.includes(card.id) ? card.image : backImage, alt: `Card ${index}` })
+              )
+            )
           )
-        )
-      )
     );
   };
 
