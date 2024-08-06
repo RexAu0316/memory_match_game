@@ -10,12 +10,21 @@ window.initGame = (React, assetsUrl) => {
     const [moves, setMoves] = useState(0);
 
     useEffect(() => {
+      initializeGame();
+    }, []);
+
+    const initializeGame = () => {
       const cardImages = ['mario.png', 'Luigi.png', 'Yoshi.png', 'Toad.png'];
       const shuffledCards = [...cardImages, ...cardImages]
         .sort(() => Math.random() - 0.5)
         .map(image => ({ image, flipped: false }));
 
       setCards(shuffledCards);
+      setFlippedCards([]);
+      setMatchedCards([]);
+      setTimer(0);
+      setGameOver(false);
+      setMoves(0);
 
       let interval;
       if (!gameOver) {
@@ -25,7 +34,7 @@ window.initGame = (React, assetsUrl) => {
       }
 
       return () => clearInterval(interval);
-    }, [gameOver]);
+    };
 
     const handleCardClick = useCallback(
       (index) => {
@@ -34,14 +43,14 @@ window.initGame = (React, assetsUrl) => {
           updatedCards[index].flipped = true;
           setCards(updatedCards);
           setFlippedCards([...flippedCards, index]);
-          setMoves(moves + 1); // Increment the move count
+          setMoves(moves + 1);
 
           if (flippedCards.length === 1 && cards[flippedCards[0]].image === cards[index].image) {
             setMatchedCards([...matchedCards, flippedCards[0], index]);
             setFlippedCards([]);
 
             if (matchedCards.length === cards.length - 2) {
-              setGameOver(true); // Game over when all cards are matched
+              setGameOver(true);
             }
           } else if (flippedCards.length === 1) {
             setTimeout(() => {
@@ -58,17 +67,7 @@ window.initGame = (React, assetsUrl) => {
     );
 
     const handleRestart = () => {
-      setCards(
-        cards.map(card => ({
-          image: card.image,
-          flipped: false,
-        }))
-      );
-      setFlippedCards([]);
-      setMatchedCards([]);
-      setTimer(0);
-      setGameOver(false);
-      setMoves(0);
+      initializeGame();
     };
 
     return React.createElement(
