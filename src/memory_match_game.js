@@ -53,11 +53,7 @@ window.initGame = (React, assetsUrl) => {
             {
               key: index,
               className: `card ${card.flipped || matchedCards.includes(index) ? 'flipped' : ''}`,
-              style: {
-                backgroundImage: card.flipped || matchedCards.includes(index)
-                  ? `url(${assetsUrl}/${card.image})`
-                  : 'url(/path/to/your/face-down-card-image.png)'
-              },
+              style: { backgroundImage: `url(${assetsUrl}/${card.image})` },
               onClick: () => handleCardClick(index)
             }
           )
