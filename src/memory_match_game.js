@@ -40,31 +40,27 @@ window.initGame = (React, assetsUrl) => {
       [cards, flippedCards, matchedCards]
     );
 
-      return React.createElement(
-    'div',
-    { className: 'memory-match' },
-    React.createElement('h1', null, 'Memory Match'),
-    React.createElement(
+    return React.createElement(
       'div',
-      { className: 'card-grid' },
-      cards.map((card, index) =>
-        React.createElement(
-          'div',
-          {
-            key: index,
-            className: `card ${card.flipped || matchedCards.includes(index) ? 'flipped' : ''}`,
-            style: {
-              backgroundImage: card.flipped || matchedCards.includes(index)
-                ? `url(${assetsUrl}/${card.image})`
-                : `url(${assetsUrl}/placeholder.png)` // Use a placeholder image initially
-            },
-            onClick: () => handleCardClick(index)
-          }
+      { className: 'memory-match' },
+      React.createElement('h1', null, 'Memory Match'),
+      React.createElement(
+        'div',
+        { className: 'card-grid' },
+        cards.map((card, index) =>
+          React.createElement(
+            'div',
+            {
+              key: index,
+              className: `card ${card.flipped || matchedCards.includes(index) ? 'flipped' : ''}`,
+              style: { backgroundImage: `url(${assetsUrl}/${card.image})` },
+              onClick: () => handleCardClick(index)
+            }
+          )
         )
       )
-    )
-  );
-};
+    );
+  };
 
   return () => React.createElement(MemoryMatch, { assetsUrl: assetsUrl });
 };
