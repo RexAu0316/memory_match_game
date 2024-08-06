@@ -6,28 +6,35 @@ window.initGame = (React, assetsUrl) => {
     const [cards, setCards] = useState([]);
     const [openCards, setOpenCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
+    const [isFlipped, setIsFlipped] = useState([]);
 
     useEffect(() => {
       // Initialize the game cards
       const cardImages = [
         'mario.png', 'mario.png',
-        'toad.png', 'toad.png',
-        'yoshi.png', 'yoshi.png',
-        'luigi.png', 'luigi.png',
+        'Toad.png', 'Toad.png',
+        'Yoshi.png', 'Yoshi.png',
+        'Luigi.png', 'Luigi.png',
       ];
 
       // Shuffle the cards
       const shuffledCards = cardImages.sort(() => Math.random() - 0.5).map((image, index) => ({
         image: `${assetsUrl}/${image}`,
-        id: index
+        id: index,
+        isFlipped: false,
       }));
 
       setCards(shuffledCards);
-    }, [assetsUrl]);
+    }, []);
 
     const handleCardClick = (card) => {
       // If the card is already matched, do nothing
       if (matchedCards.includes(card.id)) return;
+
+      // Flip the clicked card
+      const newIsFlipped = [...isFlipped];
+      newIsFlipped[card.id] = true;
+      setIsFlipped(newIsFlipped);
 
       // If there are already two open cards, close them
       if (openCards.length === 2) {
@@ -41,29 +48,42 @@ window.initGame = (React, assetsUrl) => {
       if (openCards.length === 1 && openCards[0] === card.id) {
         setMatchedCards([...matchedCards, card.id, openCards[0]]);
         setScore(score + 1);
+      } else if (openCards.length === 2 && openCards[0] !== openCards[1]) {
+        // Flip the cards back over after a short delay
+        setTimeout(() => {
+          const newIsFlipped = [...isFlipped];
+          newIsFlipped[openCards[0]] = false;
+          newIsFlipped[openCards[1]] = false;
+          setIsFlipped(newIsFlipped);
+          setOpenCards([]);
+        }, 1000);
       }
     };
 
-    return (
-      <div className="memory-match">
-        <h2>Memory Match</h2>
-        <p>Score: {score}</p>
-        <div className="game-board">
-          {cards.map((card, index) => (
-            <div
-              key={index}
-              className={`card ${openCards.includes(card.id) || matchedCards.includes(card.id) ? 'open' : ''}`}
-              onClick={() => handleCardClick(card)}
-            >
-              <img src={card.image} alt={`Card ${index}`} />
-            </div>
-          ))}
-        </div>
-      </div>
+    return React.createElement(
+      'div',
+      { className: "memory-match" },
+      React.createElement('h2', null, "Memory Match"),
+      React.createElement('p', null, `Score: ${score}`),
+      React.createElement(
+        'div',
+        { className: "game-board" },
+        cards.map((card, index) =>
+          React.createElement(
+            'div',
+            {
+              key: index,
+              className: `card ${isFlipped[card.id] ? 'open' : ''}`,
+              onClick: () => handleCardClick(card)
+            },
+            React.createElement('img', { src: isFlipped[card.id] ? card.image : `${assetsUrl}/back.png`, alt: `Card ${index}` })
+          )
+        )
+      )
     );
   };
 
-  return () => <MemoryMatch assetsUrl={assetsUrl} />;
+  return () => React.createElement(MemoryMatch, { assetsUrl: assetsUrl });
 };
 
 console.log('Memory Match script loaded');
