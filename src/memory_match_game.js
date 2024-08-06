@@ -1,16 +1,14 @@
 window.initGame = (React, assetsUrl) => {
   const { useState, useEffect } = React;
-
   const MemoryMatch = ({ assetsUrl }) => {
     const [score, setScore] = useState(0);
     const [cards, setCards] = useState([]);
     const [openCards, setOpenCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
-    const [isFlipped, setIsFlipped] = useState(cards.map(() => false)); // Initialize isFlipped with the correct length
+    const [isFlipped, setIsFlipped] = useState([]);
     const [backImage, setBackImage] = useState(`${assetsUrl}/back.png`);
     const [gameStarted, setGameStarted] = useState(false);
     const [gameFinished, setGameFinished] = useState(false);
-
     useEffect(() => {
       // Initialize the game cards
       const cardImages = [
@@ -20,44 +18,41 @@ window.initGame = (React, assetsUrl) => {
         'Luigi.png', 'Luigi.png',
       ];
 
+    
       // Shuffle the cards
-      const shuffledCards = cardImages.map((image, index) => ({
+      const shuffledCards = cardImages.sort(() => Math.random() - 0.5).map((image, index) => ({
         image: `${assetsUrl}/${image}`,
         id: index,
         isFlipped: false,
       }));
 
+    
       setCards(shuffledCards);
       setIsFlipped(shuffledCards.map(() => false)); // Initialize all cards as not flipped
     }, []);
 
+    
     const handleCardClick = (card) => {
       // If the game hasn't started yet, start the game
       if (!gameStarted) {
         setGameStarted(true);
       }
-
       // If the card is already matched, do nothing
       if (matchedCards.includes(card.id)) return;
-
       // Flip the clicked card
       const newIsFlipped = [...isFlipped];
       newIsFlipped[card.id] = true;
       setIsFlipped(newIsFlipped);
-
       // If there are already two open cards, close them
       if (openCards.length === 2) {
         setOpenCards([]);
       }
-
       // Open the clicked card
       setOpenCards([...openCards, card.id]);
-
       // Check if the two open cards match
       if (openCards.length === 1 && openCards[0] === card.id) {
         setMatchedCards([...matchedCards, card.id, openCards[0]]);
         setScore(score + 1);
-
         // Check if the game is finished
         if (matchedCards.length === cards.length) {
           setGameFinished(true);
@@ -73,7 +68,6 @@ window.initGame = (React, assetsUrl) => {
         }, 1500); // Increase the delay to 1.5 seconds
       }
     };
-
     return React.createElement(
       'div',
       { className: "memory-match" },
@@ -89,18 +83,15 @@ window.initGame = (React, assetsUrl) => {
                 'div',
                 {
                   key: index,
-                  className: `card ${isFlipped[index] || matchedCards.includes(card.id) ? 'open' : ''}`,
+                  className: `card ${isFlipped[card.id] || matchedCards.includes(card.id) ? 'open' : ''}`,
                   onClick: () => handleCardClick(card)
                 },
-                React.createElement('div', { className: 'front' }, 'Card'),
-                React.createElement('div', { className: 'back' }, React.createElement('img', { src: card.image, alt: `Card ${index}` }))
+                React.createElement('img', { src: isFlipped[card.id] || matchedCards.includes(card.id) ? card.image : backImage, alt: `Card ${index}` })
               )
             )
           )
     );
   };
-
   return () => React.createElement(MemoryMatch, { assetsUrl: assetsUrl });
 };
-
 console.log('Memory Match script loaded');
