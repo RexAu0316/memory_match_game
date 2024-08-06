@@ -7,7 +7,7 @@ window.initGame = (React, assetsUrl) => {
     const [matchedCards, setMatchedCards] = useState([]);
 
     useEffect(() => {
-      const cardImages = ['image1.png', 'image2.png', 'image3.png', 'image4.png', 'image5.png', 'image6.png'];
+      const cardImages = ['mario.png', 'Luigi.png', 'Yoshi.png', 'Toad.png'];
       const shuffledCards = [...cardImages, ...cardImages]
         .sort(() => Math.random() - 0.5)
         .map(image => ({ image, flipped: false }));
