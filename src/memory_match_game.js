@@ -10,13 +10,6 @@ window.initGame = (React, assetsUrl) => {
     const [moves, setMoves] = useState(0);
 
     useEffect(() => {
-      const cardImages = ['mario.png', 'Luigi.png', 'Yoshi.png', 'Toad.png'];
-      const shuffledCards = [...cardImages, ...cardImages]
-        .sort(() => Math.random() - 0.5)
-        .map(image => ({ image, flipped: false }));
-
-      setCards(shuffledCards);
-
       let interval;
       if (!gameOver) {
         interval = setInterval(() => {
@@ -27,6 +20,16 @@ window.initGame = (React, assetsUrl) => {
       return () => clearInterval(interval);
     }, [gameOver]);
 
+    // Shuffle the cards only once when the component is first rendered
+    useEffect(() => {
+      const cardImages = ['mario.png', 'Luigi.png', 'Yoshi.png', 'Toad.png'];
+      const shuffledCards = [...cardImages, ...cardImages]
+        .sort(() => Math.random() - 0.5)
+        .map(image => ({ image, flipped: false }));
+
+      setCards(shuffledCards);
+    }, []);
+
     const handleCardClick = useCallback(
       (index) => {
         if (!gameOver && flippedCards.length < 2 && !matchedCards.includes(index)) {
@@ -34,14 +37,14 @@ window.initGame = (React, assetsUrl) => {
           updatedCards[index].flipped = true;
           setCards(updatedCards);
           setFlippedCards([...flippedCards, index]);
-          setMoves(moves + 1); // Increment the move count
+          setMoves(moves + 1);
 
           if (flippedCards.length === 1 && cards[flippedCards[0]].image === cards[index].image) {
             setMatchedCards([...matchedCards, flippedCards[0], index]);
             setFlippedCards([]);
 
             if (matchedCards.length === cards.length - 2) {
-              setGameOver(true); // Game over when all cards are matched
+              setGameOver(true);
             }
           } else if (flippedCards.length === 1) {
             setTimeout(() => {
@@ -113,7 +116,7 @@ window.initGame = (React, assetsUrl) => {
     );
   };
 
-  return () => React.createElement(MemoryMatch, { assetsUrl: assetsUrl });
+    return () => React.createElement(MemoryMatch, { assetsUrl: assetsUrl });
 };
 
 console.log('Memory Match game script loaded');
