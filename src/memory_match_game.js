@@ -99,16 +99,20 @@ window.initGame = (React, assetsUrl) => {
           )
         )
       ),
-      gameOver && (
-        React.createElement(
-          'div',
-          { className: 'game-over' },
-          React.createElement('h2', null, 'Game Over'),
-          React.createElement('p', null, `You completed the game in ${timer} seconds and ${moves} moves!`),
+      React.createElement(
+        'div',
+        { className: 'game-over-container' },
+        gameOver && (
           React.createElement(
-            'button',
-            { onClick: handleRestart },
-            'Restart'
+            'div',
+            { className: 'game-over' },
+            React.createElement('h2', null, 'Game Over'),
+            React.createElement('p', null, `You completed the game in ${timer} seconds and ${moves} moves!`),
+            React.createElement(
+              'button',
+              { onClick: handleRestart },
+              'Restart'
+            )
           )
         )
       )
