@@ -5,6 +5,7 @@ window.initGame = (React, assetsUrl) => {
     const [cards, setCards] = useState([]);
     const [flippedCards, setFlippedCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
+    const [timer, setTimer] = useState(0);
     const [gameOver, setGameOver] = useState(false);
     const [moves, setMoves] = useState(0);
 
@@ -15,7 +16,16 @@ window.initGame = (React, assetsUrl) => {
         .map(image => ({ image, flipped: false }));
 
       setCards(shuffledCards);
-    }, []);
+
+      let interval;
+      if (!gameOver) {
+        interval = setInterval(() => {
+          setTimer(timer => timer + 1);
+        }, 1000);
+      }
+
+      return () => clearInterval(interval);
+    }, [gameOver]);
 
     const handleCardClick = useCallback(
       (index) => {
@@ -29,7 +39,6 @@ window.initGame = (React, assetsUrl) => {
           if (flippedCards.length === 1 && cards[flippedCards[0]].image === cards[index].image) {
             setMatchedCards([...matchedCards, flippedCards[0], index]);
             setFlippedCards([]);
-            
 
             if (matchedCards.length === cards.length - 2) {
               setGameOver(true); // Game over when all cards are matched
@@ -45,7 +54,7 @@ window.initGame = (React, assetsUrl) => {
           }
         }
       },
-      [cards, flippedCards, matchedCards, score, moves, gameOver]
+      [cards, flippedCards, matchedCards, timer, moves, gameOver]
     );
 
     const handleRestart = () => {
@@ -57,6 +66,7 @@ window.initGame = (React, assetsUrl) => {
       );
       setFlippedCards([]);
       setMatchedCards([]);
+      setTimer(0);
       setGameOver(false);
       setMoves(0);
     };
@@ -65,13 +75,14 @@ window.initGame = (React, assetsUrl) => {
       'div',
       { className: 'memory-match' },
       React.createElement('h1', null, 'Memory Match'),
+      React.createElement('p', null, `Time: ${timer} seconds`),
       React.createElement('p', null, `Moves: ${moves}`),
       gameOver && (
         React.createElement(
           'div',
           null,
           React.createElement('h2', null, 'Game Over'),
-          React.createElement('p', null, `You completed the game in ${moves} moves!`),
+          React.createElement('p', null, `You completed the game in ${timer} seconds and ${moves} moves!`),
           React.createElement(
             'button',
             { onClick: handleRestart },
