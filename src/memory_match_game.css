@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: gray;
+  background-color: #f0f0f0; /* Light gray background */
 }
 
 .card-grid {
@@ -22,6 +22,8 @@
   position: relative;
   transform-style: preserve-3d;
   transition: transform 0.3s;
+  background-color: #fff; /* White card background */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
 }
 
 .card .front,
@@ -33,12 +35,13 @@
 }
 
 .card .front {
-  background-color: gray;
+  background-color: #f0f0f0; /* Light gray front */
 }
 
 .card .back {
   background-size: cover;
   transform: rotateY(180deg);
+  background-color: #e0e0e0; /* Light gray back */
 }
 
 .card.flipped {
