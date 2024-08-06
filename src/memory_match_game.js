@@ -11,10 +11,10 @@ window.initGame = (React, assetsUrl) => {
     useEffect(() => {
       // Initialize the game cards
       const cardImages = [
-        'mario.jpg', 'mario.jpg',
-        'card2.jpg', 'card2.jpg',
-        'card3.jpg', 'card3.jpg',
-        'card4.jpg', 'card4.jpg',
+        'mario.png', 'mario.png',
+        'Toad.png', 'Toad.png',
+        'Yoshi.png', 'Yoshi.png',
+        'Luigi.png', 'Luigi.png',
       ];
 
       // Shuffle the cards
