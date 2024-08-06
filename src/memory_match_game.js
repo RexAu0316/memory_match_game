@@ -40,9 +40,6 @@ window.initGame = (React, assetsUrl) => {
       [cards, flippedCards, matchedCards]
     );
 
-const MemoryMatch = ({ assetsUrl }) => {
-  // ... (other state and effect hooks)
-
   return React.createElement(
     'div',
     { className: 'memory-match' },
