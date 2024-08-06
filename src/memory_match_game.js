@@ -1,4 +1,3 @@
-// memory-match.js
 window.initGame = (React, assetsUrl) => {
   const { useState, useEffect } = React;
 
@@ -12,9 +11,9 @@ window.initGame = (React, assetsUrl) => {
       // Initialize the game cards
       const cardImages = [
         'mario.png', 'mario.png',
-        'Toad.png', 'Toad.png',
-        'Yoshi.png', 'Yoshi.png',
-        'Luigi.png', 'Luigi.png',
+        'toad.png', 'toad.png',
+        'yoshi.png', 'yoshi.png',
+        'luigi.png', 'luigi.png',
       ];
 
       // Shuffle the cards
@@ -24,7 +23,7 @@ window.initGame = (React, assetsUrl) => {
       }));
 
       setCards(shuffledCards);
-    }, []);
+    }, [assetsUrl]);
 
     const handleCardClick = (card) => {
       // If the card is already matched, do nothing
@@ -45,30 +44,26 @@ window.initGame = (React, assetsUrl) => {
       }
     };
 
-    return React.createElement(
-      'div',
-      { className: "memory-match" },
-      React.createElement('h2', null, "Memory Match"),
-      React.createElement('p', null, `Score: ${score}`),
-      React.createElement(
-        'div',
-        { className: "game-board" },
-        cards.map((card, index) =>
-          React.createElement(
-            'div',
-            {
-              key: index,
-              className: `card ${openCards.includes(card.id) || matchedCards.includes(card.id) ? 'open' : ''}`,
-              onClick: () => handleCardClick(card)
-            },
-            React.createElement('img', { src: card.image, alt: `Card ${index}` })
-          )
-        )
-      )
+    return (
+      <div className="memory-match">
+        <h2>Memory Match</h2>
+        <p>Score: {score}</p>
+        <div className="game-board">
+          {cards.map((card, index) => (
+            <div
+              key={index}
+              className={`card ${openCards.includes(card.id) || matchedCards.includes(card.id) ? 'open' : ''}`}
+              onClick={() => handleCardClick(card)}
+            >
+              <img src={card.image} alt={`Card ${index}`} />
+            </div>
+          ))}
+        </div>
+      </div>
     );
   };
 
-  return () => React.createElement(MemoryMatch, { assetsUrl: assetsUrl });
+  return () => <MemoryMatch assetsUrl={assetsUrl} />;
 };
 
 console.log('Memory Match script loaded');
