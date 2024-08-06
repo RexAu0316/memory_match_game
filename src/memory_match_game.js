@@ -39,7 +39,6 @@ window.initGame = (React, assetsUrl) => {
           if (flippedCards.length === 1 && cards[flippedCards[0]].image === cards[index].image) {
             setMatchedCards([...matchedCards, flippedCards[0], index]);
             setFlippedCards([]);
-            
 
             if (matchedCards.length === cards.length - 2) {
               setGameOver(true); // Game over when all cards are matched
@@ -59,12 +58,6 @@ window.initGame = (React, assetsUrl) => {
     );
 
     const handleRestart = () => {
-      setCards(
-        cards.map(card => ({
-          image: card.image,
-          flipped: false,
-        }))
-      );
       setFlippedCards([]);
       setMatchedCards([]);
       setTimer(0);
@@ -72,7 +65,7 @@ window.initGame = (React, assetsUrl) => {
       setMoves(0);
     };
 
-     return React.createElement(
+    return React.createElement(
       'div',
       { className: 'memory-match' },
       React.createElement('h1', null, 'Memory Match'),
