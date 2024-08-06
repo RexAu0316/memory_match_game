@@ -5,6 +5,7 @@ window.initGame = (React, assetsUrl) => {
     const [cards, setCards] = useState([]);
     const [flippedCards, setFlippedCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
+    const [score, setScore] = useState(0);
 
     useEffect(() => {
       const cardImages = ['mario.png', 'Luigi.png', 'Yoshi.png', 'Toad.png'];
@@ -26,6 +27,7 @@ window.initGame = (React, assetsUrl) => {
           if (flippedCards.length === 1 && cards[flippedCards[0]].image === cards[index].image) {
             setMatchedCards([...matchedCards, flippedCards[0], index]);
             setFlippedCards([]);
+            setScore(score + 1); // Increment the score
           } else if (flippedCards.length === 1) {
             setTimeout(() => {
               const resetCards = [...cards];
@@ -37,37 +39,38 @@ window.initGame = (React, assetsUrl) => {
           }
         }
       },
-      [cards, flippedCards, matchedCards]
+      [cards, flippedCards, matchedCards, score]
     );
 
-   return React.createElement(
-    'div',
-    { className: 'memory-match' },
-    React.createElement('h1', null, 'Memory Match'),
-    React.createElement(
+    return React.createElement(
       'div',
-      { className: 'card-grid' },
-      cards.map((card, index) =>
-        React.createElement(
-          'div',
-          {
-            key: index,
-            className: `card ${card.flipped || matchedCards.includes(index) ? 'flipped' : ''}`,
-            onClick: () => handleCardClick(index)
-          },
-          React.createElement('div', { className: 'front' }),
+      { className: 'memory-match' },
+      React.createElement('h1', null, 'Memory Match'),
+      React.createElement('p', null, `Score: ${score}`), // Display the current score
+      React.createElement(
+        'div',
+        { className: 'card-grid' },
+        cards.map((card, index) =>
           React.createElement(
             'div',
             {
-              className: 'back',
-              style: { backgroundImage: `url(${assetsUrl}/${card.image})` }
-            }
+              key: index,
+              className: `card ${card.flipped || matchedCards.includes(index) ? 'flipped' : ''}`,
+              onClick: () => handleCardClick(index)
+            },
+            React.createElement('div', { className: 'front' }),
+            React.createElement(
+              'div',
+              {
+                className: 'back',
+                style: { backgroundImage: `url(${assetsUrl}/${card.image})` }
+              }
+            )
           )
         )
       )
-    )
-  );
-};
+    );
+  };
 
   return () => React.createElement(MemoryMatch, { assetsUrl: assetsUrl });
 };
